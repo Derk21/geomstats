@@ -102,6 +102,7 @@ class RiemannianKMeans(TransformerMixin, ClusterMixin, BaseEstimator):
                     weights = dists_to_closest_cluster_center / gs.sum(
                         dists_to_closest_cluster_center
                     )
+                    
                     index = rv_discrete(
                         values=(gs.to_numpy(indices), gs.to_numpy(weights))
                     ).rvs()
