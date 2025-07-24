@@ -120,11 +120,11 @@ class RiemannianKMeans(TransformerMixin, ClusterMixin, BaseEstimator):
                     f"Unknown initial cluster centers method '{self.init}'."
                 )
 
-            if os.environ.get("GEOMSTATS_BACKEND", "numpy") == "torch":
+            if os.environ.get("GEOMSTATS_BACKEND", "numpy") == "pytorch":
                 import torch
                 cluster_centers = torch.stack(cluster_centers, axis=0)
             else:
-                cluster_centers = gs.stack(cluster_centers, axis=0)
+                cluster_centers = gs.stack(cluster_centers,axis=0)
         else:
             if callable(self.init):
                 cluster_centers = self.init(X, self.n_clusters)
