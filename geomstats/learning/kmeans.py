@@ -12,7 +12,7 @@ from sklearn.base import BaseEstimator, ClusterMixin
 import geomstats.backend as gs
 from geomstats.learning._template import TransformerMixin
 from geomstats.learning.frechet_mean import FrechetMean
-
+import os 
 
 class RiemannianKMeans(TransformerMixin, ClusterMixin, BaseEstimator):
     """Class for k-means clustering on manifolds.
@@ -120,7 +120,11 @@ class RiemannianKMeans(TransformerMixin, ClusterMixin, BaseEstimator):
                     f"Unknown initial cluster centers method '{self.init}'."
                 )
 
-            cluster_centers = gs.stack(cluster_centers, axis=0)
+            if os.environ.get("GEOMSTATS_BACKEND", "numpy") == "torch":
+                import torch
+                cluster_centers = torch.stack(cluster_centers, axis=0)
+            else:
+                cluster_centers = gs.stack(cluster_centers, axis=0)
         else:
             if callable(self.init):
                 cluster_centers = self.init(X, self.n_clusters)
