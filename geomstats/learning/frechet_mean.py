@@ -150,8 +150,8 @@ class GradientDescent(BaseGradientDescent):
         """Perform default gradient descent."""
         n_points = gs.shape(points)[0]
         if weights is None:
-            weights = gs.ones((n_points,))
-        weights = weights.to(points.device)
+            weights = gs.ones((n_points,), dtype=points.dtype, device=points.device)
+        #weights = weights.to(points.device)
         mean = points[0] if self.init_point is None else self.init_point
 
         if n_points == 1:
