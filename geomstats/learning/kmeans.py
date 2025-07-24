@@ -111,6 +111,10 @@ class RiemannianKMeans(TransformerMixin, ClusterMixin, BaseEstimator):
                 cluster_centers = [
                     X[randint(0, n_samples - 1)] for i in range(self.n_clusters)
                 ]
+                devices = [getattr(center, "device", None) for center in cluster_centers]
+                if any(device != devices[0] for device in devices):
+                    raise RuntimeError("All cluster centers must be on the same device.")
+                
             else:
                 raise ValueError(
                     f"Unknown initial cluster centers method '{self.init}'."
